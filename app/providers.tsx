@@ -1,8 +1,8 @@
 'use client'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type ReactNode, useState } from 'react'
 import { type State, WagmiProvider } from 'wagmi'
+import { TRPCReactProvider } from './trpc/client'
 
 import { getConfig } from '../wagmiConfig'
 
@@ -14,11 +14,10 @@ export function Providers({
   initialState?: State
 }) {
   const [config] = useState(() => getConfig())
-  const [queryClient] = useState(() => new QueryClient())
 
   return (
     <WagmiProvider config={config} initialState={initialState}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <TRPCReactProvider>{children}</TRPCReactProvider>
     </WagmiProvider>
   )
 }
