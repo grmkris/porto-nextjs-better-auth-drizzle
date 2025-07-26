@@ -4,15 +4,17 @@ import { useAccount, useSignMessage } from "wagmi";
 import { Button } from "@/components/ui/button";
 import { authClient, siweNonce, siweVerify } from "@/lib/auth-client";
 import { createSiweMessage } from "viem/siwe";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ShieldCheck, Loader2, AlertCircle } from "lucide-react";
-import { clientEnv } from "@/env/clientEnv";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/hooks/useSession";
 
 export function SignInButton() {
   const account = useAccount();
   const signMessage = useSignMessage();
-  const { data: session } = authClient.useSession();
-
+  const session = useSession();
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const signInMutation = useMutation({
     mutationFn: async () => {
       if (!account.address) {
@@ -50,13 +52,21 @@ export function SignInButton() {
 
       return verifyResponse;
     },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
+      router.push("/dashboard");
+    },
   });
 
   const signOutMutation = useMutation({
     mutationFn: () => authClient.signOut(),
+    onSuccess: () => {
+      queryClient.invalidateQueries();
+      router.push("/");
+    },
   });
 
-  if (session?.user) {
+  if (session.data?.data?.user) {
     return (
       <div className="flex flex-col items-center gap-4 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
@@ -68,7 +78,7 @@ export function SignInButton() {
             Signed in as
           </p>
           <p className="font-medium">
-            {session.user.name || session.user.email}
+            {session.data.data.user.name || session.data.data.user.email}
           </p>
         </div>
         <Button

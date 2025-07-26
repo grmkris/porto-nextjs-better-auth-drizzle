@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { useSession } from "@/hooks/useSession";
 
 export default function Dashboard() {
-  const { data: session, isPending } = authClient.useSession();
+  const session = useSession();
   const router = useRouter();
 
   const signOutMutation = useMutation({
@@ -17,13 +18,7 @@ export default function Dashboard() {
     },
   });
 
-  useEffect(() => {
-    if (!isPending && !session?.user) {
-      router.push("/");
-    }
-  }, [session, isPending, router]);
-
-  if (isPending) {
+  if (session.isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div>Loading...</div>
@@ -31,7 +26,7 @@ export default function Dashboard() {
     );
   }
 
-  if (!session?.user) {
+  if (!session.data?.data?.user) {
     return null;
   }
 
@@ -53,23 +48,27 @@ export default function Dashboard() {
             <div className="space-y-2">
               <div>
                 <span className="font-medium">User ID:</span>{" "}
-                <span className="font-mono text-sm">{session.user.id}</span>
+                <span className="font-mono text-sm">
+                  {session.data.data.user.id}
+                </span>
               </div>
-              {session.user.email && (
+              {session.data.data.user.email && (
                 <div>
                   <span className="font-medium">Email:</span>{" "}
-                  <span>{session.user.email}</span>
+                  <span>{session.data.data.user.email}</span>
                 </div>
               )}
-              {session.user.name && (
+              {session.data.data.user.name && (
                 <div>
                   <span className="font-medium">Name:</span>{" "}
-                  <span>{session.user.name}</span>
+                  <span>{session.data.data.user.name}</span>
                 </div>
               )}
               <div>
                 <span className="font-medium">Created At:</span>{" "}
-                <span>{new Date(session.user.createdAt).toLocaleString()}</span>
+                <span>
+                  {new Date(session.data.data.user.createdAt).toLocaleString()}
+                </span>
               </div>
             </div>
           </div>
