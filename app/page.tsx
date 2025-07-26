@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { PortoConnect } from "./components/PortoConnect";
 
 export default function Home() {
   return (
-    <Button>Click me</Button>
+    <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <PortoConnect />
+    </div>
   );
 }
