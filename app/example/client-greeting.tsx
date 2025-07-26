@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useQuery } from '@tanstack/react-query';
-import { useTRPC } from '~/app/trpc/client';
+import { useQuery } from "@tanstack/react-query";
+import { useTRPC } from "~/app/trpc/client";
 
 export function ClientGreeting() {
   const trpc = useTRPC();
   const { data, isLoading, error } = useQuery(
-    trpc.hello.queryOptions({ text: 'Client Component' })
+    trpc.hello.queryOptions({ text: "Client Component" }),
   );
 
   if (isLoading) return <div>Loading...</div>;

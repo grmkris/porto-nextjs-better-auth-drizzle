@@ -1,6 +1,6 @@
-import { http, createConfig, cookieStorage, createStorage } from 'wagmi'
-import { base, baseSepolia } from 'wagmi/chains'
-import { porto } from 'porto/wagmi'
+import { http, createConfig, cookieStorage, createStorage } from "wagmi";
+import { base, baseSepolia } from "wagmi/chains";
+import { porto } from "porto/wagmi";
 
 export function getConfig() {
   return createConfig({
@@ -14,5 +14,5 @@ export function getConfig() {
       [base.id]: http(),
       [baseSepolia.id]: http(),
     },
-  })
+  });
 }

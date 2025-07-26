@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { headers } from 'next/headers'
-import { cookieToInitialState } from 'wagmi'
+import { headers } from "next/headers";
+import { cookieToInitialState } from "wagmi";
 import "./globals.css";
-import { getConfig } from '../wagmiConfig'
-import { Providers } from './providers'
+import { getConfig } from "../wagmiConfig";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,17 +28,15 @@ export default async function RootLayout({
 }>) {
   const initialState = cookieToInitialState(
     getConfig(),
-    (await headers()).get('cookie')
-  )
-  
+    (await headers()).get("cookie"),
+  );
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers initialState={initialState}>
-          {children}
-        </Providers>
+        <Providers initialState={initialState}>{children}</Providers>
       </body>
     </html>
   );
