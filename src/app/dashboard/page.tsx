@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 
 export default function Dashboard() {
-  const { data: session, isLoading } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
 
   const signOutMutation = useMutation({
@@ -18,12 +18,12 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (!isLoading && !session?.user) {
+    if (!isPending && !session?.user) {
       router.push("/");
     }
-  }, [session, isLoading, router]);
+  }, [session, isPending, router]);
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div>Loading...</div>
