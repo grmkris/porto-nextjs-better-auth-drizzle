@@ -7,11 +7,7 @@ export const useSession = () => {
   return useQuery({
     queryKey: ["session"],
     queryFn: async () => {
-      const session = await authClient.getSession();
-      if (!session?.data?.user) {
-        throw new Error("Unauthorized");
-      }
-      return session;
+      return authClient.getSession();
     },
   });
 };

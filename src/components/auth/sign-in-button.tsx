@@ -60,9 +60,8 @@ export function SignInButton() {
 
   const signOutMutation = useMutation({
     mutationFn: () => authClient.signOut(),
-    onSuccess: () => {
-      queryClient.invalidateQueries();
-      router.push("/");
+    onSuccess: async () => {
+      await queryClient.invalidateQueries();
     },
   });
 
