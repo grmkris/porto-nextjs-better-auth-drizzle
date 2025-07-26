@@ -9,7 +9,9 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "db:generate": "drizzle-kit generate",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "auth:db:generate": "npx @better-auth/cli@latest generate"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1",

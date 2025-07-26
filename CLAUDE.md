@@ -32,6 +32,7 @@ bun db:studio
 This is a Next.js 15 application with the following key technologies:
 
 **Frontend Stack:**
+
 - Next.js 15.4.4 with App Router and Turbopack
 - React 19.1.0 with TypeScript
 - TailwindCSS v4 for styling with radix-ui components
@@ -39,11 +40,13 @@ This is a Next.js 15 application with the following key technologies:
 - Support for Base and Base Sepolia chains
 
 **Backend Stack:**
+
 - tRPC v11 for type-safe API endpoints
 - Drizzle ORM with PostgreSQL (Neon serverless)
 - Server-side rendering with cookie-based state persistence
 
 **Project Structure:**
+
 - `/src/app` - Next.js App Router pages and API routes
   - `/src/app/trpc` - tRPC client-side setup
   - `/src/app/api/trpc/[trpc]` - tRPC API endpoint
@@ -59,6 +62,7 @@ This is a Next.js 15 application with the following key technologies:
 - `/migrations` - Database migration files
 
 **Key Patterns:**
+
 - tRPC routers are defined in `/src/server/trpc/routers/_app.ts`
 - Database schema uses Drizzle ORM in `/src/server/db/schema.db.ts`
 - Environment variables are validated using `@t3-oss/env-nextjs`

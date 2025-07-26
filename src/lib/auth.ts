@@ -16,9 +16,9 @@ export const auth = betterAuth({
   plugins: [
     openAPI(),
     siwe({
-      domain: "localhost:3000", // Will be updated for production
+      domain: "localhost:3000",
       emailDomainName: "unite-defi.com",
-      anonymous: false, // Require email for account creation
+      anonymous: true,
       getNonce: async () => {
         // Generate a cryptographically secure random nonce
         return generateRandomString(32);
@@ -68,4 +68,7 @@ export const auth = betterAuth({
       },
     }),
   ],
+  logger: {
+    level: "debug",
+  },
 });

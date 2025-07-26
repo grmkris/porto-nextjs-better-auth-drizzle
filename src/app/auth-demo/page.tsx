@@ -17,7 +17,7 @@ export default function AuthDemoPage() {
         {/* Wallet Connection */}
         <div className="border rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Step 1: Connect Wallet</h2>
-          
+
           {!isConnected ? (
             <div className="space-y-2">
               {connectors.map((connector) => (
@@ -45,7 +45,7 @@ export default function AuthDemoPage() {
         {/* Authentication */}
         <div className="border rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Step 2: Authenticate</h2>
-          
+
           {isConnected ? (
             <SiweButton />
           ) : (

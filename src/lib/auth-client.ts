@@ -1,57 +1,70 @@
 import { createAuthClient } from "better-auth/react";
 import { clientEnv } from "@/env/clientEnv";
+import { getAddress } from "viem";
 
 export const authClient = createAuthClient({
   baseURL: clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL,
   plugins: [],
 });
 
-// siweClient plugin is not working yet so we are manually using fetch to call the api
-export const siweNonce = async (walletAddress: string, chainId: string) => {
-  const response = await fetch(`${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/nonce`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+/**
+ * Get nonce for SIWE, This is a workaround since the siweClient plugin is not working yet
+ * @param walletAddress - The wallet address to get the nonce for
+ * @returns The nonce
+ */
+export const siweNonce = async (walletAddress: string) => {
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/nonce`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        walletAddress: getAddress(walletAddress),
+      }),
     },
-    body: JSON.stringify({ 
-      walletAddress, 
-      chainId: chainId.toString() 
-    }),
-  });
-  
+  );
+
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || "Failed to get nonce");
   }
-  
+
   return response.json();
 };
 
+/**
+ * Verify SIWE signature, This is a workaround since the siweClient plugin is not working yet
+ * @param message - The SIWE message
+ * @param signature - The signature
+ * @param walletAddress - The wallet address
+ * @returns The session
+ */
 export const siweVerify = async (
-  message: string, 
-  signature: string, 
-  walletAddress: string, 
-  chainId: string,
-  email?: string
+  message: string,
+  signature: string,
+  walletAddress: string,
 ) => {
-  const response = await fetch(`${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/verify`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/verify`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message,
+        signature,
+        walletAddress,
+      }),
     },
-    body: JSON.stringify({ 
-      message, 
-      signature, 
-      walletAddress, 
-      chainId: chainId.toString(),
-      ...(email && { email })
-    }),
-  });
-  
+  );
+
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || "Failed to verify signature");
   }
-  
+
   return response.json();
 };
