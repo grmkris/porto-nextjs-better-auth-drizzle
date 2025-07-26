@@ -12,7 +12,9 @@ export const authClient = createAuthClient({
  * @param walletAddress - The wallet address to get the nonce for
  * @returns The nonce
  */
-export const siweNonce = async (walletAddress: string) => {
+export const siweNonce = async (
+  walletAddress: string,
+): Promise<{ nonce: string }> => {
   const response = await fetch(
     `${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/nonce`,
     {
@@ -41,11 +43,11 @@ export const siweNonce = async (walletAddress: string) => {
  * @param walletAddress - The wallet address
  * @returns The session
  */
-export const siweVerify = async (
-  message: string,
-  signature: string,
-  walletAddress: string,
-) => {
+export const siweVerify = async (props: {
+  message: string;
+  signature: string;
+  walletAddress: string;
+}) => {
   const response = await fetch(
     `${clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL}/siwe/verify`,
     {
@@ -54,9 +56,9 @@ export const siweVerify = async (
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        message,
-        signature,
-        walletAddress,
+        message: props.message,
+        signature: props.signature,
+        walletAddress: props.walletAddress,
       }),
     },
   );

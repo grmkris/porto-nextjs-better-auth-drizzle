@@ -3,9 +3,14 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { openAPI, siwe } from "better-auth/plugins";
 import { db } from "@/server/db/drizzle";
 import { serverEnv } from "@/env/serverEnv";
-import { generateRandomString } from "better-auth/crypto";
-import { verifyMessage, createPublicClient, http } from "viem";
+import { verifyMessage, createPublicClient, http, getAddress } from "viem";
 import { mainnet } from "viem/chains";
+import { Porto, ServerActions } from "porto";
+import { ServerClient } from "porto/viem";
+import { hashMessage } from "viem";
+import { generateSiweNonce, parseSiweMessage } from "viem/siwe";
+
+const porto = Porto.create();
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -21,17 +26,21 @@ export const auth = betterAuth({
       anonymous: true,
       getNonce: async () => {
         // Generate a cryptographically secure random nonce
-        return generateRandomString(32);
+        return generateSiweNonce();
       },
       verifyMessage: async ({ message, signature, address }) => {
+        console.log("verifyMessage", message, signature, address);
         try {
-          // Verify the signature using viem
-          const isValid = await verifyMessage({
-            address: address as `0x${string}`,
-            message,
+          const { address, chainId, nonce } = parseSiweMessage(message);
+
+          // Verify the signature.
+          const client = ServerClient.fromPorto(porto, { chainId });
+          const valid = await ServerActions.verifySignature(client, {
+            address: address!,
+            digest: hashMessage(message),
             signature: signature as `0x${string}`,
           });
-          return isValid;
+          return valid.valid;
         } catch (error) {
           console.error("SIWE verification failed:", error);
           return false;
@@ -46,7 +55,7 @@ export const auth = betterAuth({
           });
 
           const ensName = await client.getEnsName({
-            address: walletAddress as `0x${string}`,
+            address: getAddress(walletAddress),
           });
 
           const ensAvatar = ensName
