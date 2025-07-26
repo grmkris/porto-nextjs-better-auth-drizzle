@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { siwe } from "better-auth/plugins";
+import { openAPI, siwe } from "better-auth/plugins";
 import { db } from "@/server/db/drizzle";
 import { serverEnv } from "@/env/serverEnv";
 import { generateRandomString } from "better-auth/crypto";
@@ -14,6 +14,7 @@ export const auth = betterAuth({
   baseURL: serverEnv.BETTER_AUTH_URL,
   secret: serverEnv.BETTER_AUTH_SECRET,
   plugins: [
+    openAPI(),
     siwe({
       domain: "localhost:3000", // Will be updated for production
       emailDomainName: "unite-defi.com",
