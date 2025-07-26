@@ -2,9 +2,9 @@
 
 import { type ReactNode, useState } from "react";
 import { type State, WagmiProvider } from "wagmi";
-import { TRPCReactProvider } from "./trpc/client";
+import { TRPCReactProvider } from "@/app/trpc/client";
 
-import { getConfig } from "../wagmiConfig";
+import { getConfig } from "@/config/wagmiConfig";
 
 export function Providers({
   children,

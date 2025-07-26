@@ -1,4 +1,4 @@
-import { PortoConnect } from "./components/PortoConnect";
+import { PortoConnect } from "@/components/features/PortoConnect";
 
 export default function Home() {
   return (

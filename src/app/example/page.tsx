@@ -1,4 +1,4 @@
-import { HydrateClient, prefetch, trpc, caller } from "~/app/trpc/server";
+import { HydrateClient, prefetch, trpc, caller } from "@/app/trpc/server";
 import { Suspense } from "react";
 import { ClientGreeting } from "./client-greeting";
 

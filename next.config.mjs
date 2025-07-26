@@ -3,8 +3,8 @@ import createJiti from "jiti";
 const jiti = createJiti(fileURLToPath(import.meta.url));
 
 // Import env here to validate during build
-jiti("./env/serverEnv.ts");
-jiti("./env/clientEnv.ts");
+jiti("./src/env/serverEnv.ts");
+jiti("./src/env/clientEnv.ts");
 
 /** @type {import('next').NextConfig} */
 export default {

@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import { cookieToInitialState } from "wagmi";
 import "./globals.css";
-import { getConfig } from "../wagmiConfig";
-import { Providers } from "./providers";
+import { getConfig } from "@/config/wagmiConfig";
+import { Providers } from "@/app/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
