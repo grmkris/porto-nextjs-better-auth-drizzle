@@ -1,6 +1,6 @@
 "use client";
 import { LogOut } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { useDisconnect } from "wagmi";
 
 interface SignOutButtonProps {
   variant?: "default" | "dropdown";
@@ -11,14 +11,12 @@ export const SignOutButton = ({
   variant = "default",
   className,
 }: SignOutButtonProps) => {
-  const handleSignOut = () => {
-    authClient.signOut();
-  };
+  const { disconnect } = useDisconnect();
 
   if (variant === "dropdown") {
     return (
       <div
-        onClick={handleSignOut}
+        onClick={() => disconnect()}
         className={className || "flex items-center cursor-pointer"}
       >
         <LogOut className="mr-2 h-4 w-4" />
@@ -29,7 +27,7 @@ export const SignOutButton = ({
 
   return (
     <button
-      onClick={handleSignOut}
+      onClick={() => disconnect()}
       className={
         className ||
         "flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors w-full"
