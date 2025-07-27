@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import {
   Home,
   Users,
-  Activity,
   Shield,
   ChevronDown,
   ChevronUp,
@@ -16,8 +15,6 @@ import {
   Palette,
 } from "lucide-react";
 
-import { SearchForm } from "@/components/search-form";
-import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -55,6 +52,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user?: {
@@ -94,6 +92,7 @@ const navigation = [
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const pathname = usePathname();
   const { state } = useSidebar();
+  const isMobile = useIsMobile();
 
   const isPathActive = (path: string) => {
     if (path === "/admin") {
@@ -182,7 +181,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
             <ThemeToggle
               button={
                 <SidebarMenuButton className="h-auto py-2">
-                  <Palette />
+                  {isMobile ? <Palette /> : <span>Theme</span>}
                 </SidebarMenuButton>
               }
             />
