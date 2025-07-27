@@ -12,6 +12,7 @@ import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Shield } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AdminLoginPage() {
   const { data: session, isPending } = useSession();
@@ -32,7 +33,22 @@ export default function AdminLoginPage() {
   if (isPending) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">Loading...</div>
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+            </div>
+            <Skeleton className="h-8 w-40 mx-auto mb-2" />
+            <Skeleton className="h-4 w-64 mx-auto" />
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-48 mx-auto" />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }

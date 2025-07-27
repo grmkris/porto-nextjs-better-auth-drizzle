@@ -1,6 +1,7 @@
 import { HydrateClient, prefetch, trpc, caller } from "@/app/trpc/server";
 import { Suspense } from "react";
 import { ClientGreeting } from "./client-greeting";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function ExamplePage() {
   prefetch(trpc.hello.queryOptions({ text: "tRPC" }));
@@ -10,7 +11,14 @@ export default async function ExamplePage() {
       <div className="p-8">
         <h1 className="text-2xl font-bold mb-4">tRPC Example</h1>
 
-        <Suspense fallback={<div>Loading greeting...</div>}>
+        <Suspense
+          fallback={
+            <div className="p-4 bg-blue-50 rounded">
+              <Skeleton className="h-5 w-48 mb-2" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+          }
+        >
           <ClientGreeting />
         </Suspense>
 

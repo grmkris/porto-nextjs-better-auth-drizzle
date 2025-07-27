@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/app/trpc/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function ClientGreeting() {
   const trpc = useTRPC();
@@ -9,7 +10,13 @@ export function ClientGreeting() {
     trpc.hello.queryOptions({ text: "Client Component" }),
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="p-4 bg-blue-50 rounded">
+        <Skeleton className="h-5 w-48 mb-2" />
+        <Skeleton className="h-4 w-64" />
+      </div>
+    );
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return null;
 

@@ -82,11 +82,6 @@ const navigation = [
       },
     ],
   },
-  {
-    title: "Activity Logs",
-    url: "/admin/activity",
-    icon: Shield,
-  },
 ];
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {

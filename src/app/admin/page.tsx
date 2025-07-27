@@ -2,58 +2,151 @@ import { db } from "@/server/db/drizzle";
 import { user, session, walletAddress } from "@/server/db/schema.db";
 import { sql } from "drizzle-orm";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Activity, Wallet, TrendingUp } from "lucide-react";
+import { Users, Wallet, TrendingUp, BarChart } from "lucide-react";
 import { requireAdmin } from "./auth-check";
+
+function calculatePercentageChange(
+  growth: number,
+  previousBase: number,
+): { value: string; type: "positive" | "negative" | "neutral" } {
+  // If there was no previous data and we have growth, it's new
+  if (previousBase === 0 && growth > 0) {
+    return { value: "New!", type: "positive" };
+  }
+
+  // If there was no previous data and no growth
+  if (previousBase === 0 && growth === 0) {
+    return { value: "N/A", type: "neutral" };
+  }
+
+  // If we have negative growth with no previous base
+  if (previousBase === 0 && growth < 0) {
+    return { value: "Error", type: "negative" };
+  }
+
+  // Normal percentage calculation
+  const changePercent = (growth / previousBase) * 100;
+
+  // Clamp extreme values
+  if (changePercent > 999) {
+    return { value: "+999%+", type: "positive" };
+  }
+  if (changePercent < -99) {
+    return { value: "-99%+", type: "negative" };
+  }
+
+  const rounded = Math.round(changePercent * 10) / 10; // Round to 1 decimal place
+
+  if (growth > 0) {
+    return { value: `+${rounded}%`, type: "positive" };
+  } else if (growth < 0) {
+    return { value: `${rounded}%`, type: "negative" };
+  }
+  return { value: "0%", type: "neutral" };
+}
 
 export default async function AdminDashboard() {
   const currentSession = await requireAdmin();
 
-  // Get statistics
-  const [userCount] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(user);
+  // Execute all queries in parallel for better performance
+  const [
+    [userCount],
+    [sessionCount],
+    [walletCount],
+    [recentUsers],
+    [userCount30DaysAgo],
+    [sessionCount30DaysAgo],
+    [walletCount30DaysAgo],
+    [recentUsers24HoursAgo],
+  ] = await Promise.all([
+    // Current statistics
+    db.select({ count: sql<number>`count(*)` }).from(user),
+    db.select({ count: sql<number>`count(*)` }).from(session),
+    db.select({ count: sql<number>`count(*)` }).from(walletAddress),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(user)
+      .where(sql`${user.createdAt} > now() - interval '24 hours'`),
 
-  const [sessionCount] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(session);
+    // Get count from 30 days ago (for month-over-month comparison)
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(user)
+      .where(sql`${user.createdAt} <= now() - interval '30 days'`),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(session)
+      .where(sql`${session.createdAt} <= now() - interval '30 days'`),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(walletAddress)
+      .where(sql`${walletAddress.createdAt} <= now() - interval '30 days'`),
 
-  const [walletCount] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(walletAddress);
+    // New users from previous 24-hour period (24-48 hours ago)
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(user)
+      .where(
+        sql`${user.createdAt} > now() - interval '48 hours' AND ${user.createdAt} <= now() - interval '24 hours'`,
+      ),
+  ]);
 
-  const [recentUsers] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(user)
-    .where(sql`${user.createdAt} > now() - interval '24 hours'`);
+  // Calculate percentage changes
+  // For total counts, we compare growth in the last 30 days
+  const userGrowth = (userCount.count || 0) - (userCount30DaysAgo.count || 0);
+  const userChange = calculatePercentageChange(
+    userGrowth,
+    userCount30DaysAgo.count || 0,
+  );
+
+  const sessionGrowth =
+    (sessionCount.count || 0) - (sessionCount30DaysAgo.count || 0);
+  const sessionChange = calculatePercentageChange(
+    sessionGrowth,
+    sessionCount30DaysAgo.count || 0,
+  );
+
+  const walletGrowth =
+    (walletCount.count || 0) - (walletCount30DaysAgo.count || 0);
+  const walletChange = calculatePercentageChange(
+    walletGrowth,
+    walletCount30DaysAgo.count || 0,
+  );
+
+  // For 24h comparison, we directly compare the two periods
+  const recentUsersChange = calculatePercentageChange(
+    recentUsers.count || 0,
+    recentUsers24HoursAgo.count || 0,
+  );
 
   const stats = [
     {
       title: "Total Users",
       value: userCount.count || 0,
       icon: Users,
-      change: "+12%",
-      changeType: "positive" as const,
+      change: userChange.value,
+      changeType: userChange.type,
     },
     {
       title: "Active Sessions",
       value: sessionCount.count || 0,
-      icon: Activity,
-      change: "+8%",
-      changeType: "positive" as const,
+      icon: BarChart,
+      change: sessionChange.value,
+      changeType: sessionChange.type,
     },
     {
       title: "Connected Wallets",
       value: walletCount.count || 0,
       icon: Wallet,
-      change: "+15%",
-      changeType: "positive" as const,
+      change: walletChange.value,
+      changeType: walletChange.type,
     },
     {
       title: "New Users (24h)",
       value: recentUsers.count || 0,
       icon: TrendingUp,
-      change: "+5%",
-      changeType: "positive" as const,
+      change: recentUsersChange.value,
+      changeType: recentUsersChange.type,
     },
   ];
 
@@ -81,10 +174,13 @@ export default async function AdminDashboard() {
                 className={`text-xs ${
                   stat.changeType === "positive"
                     ? "text-green-600"
-                    : "text-red-600"
+                    : stat.changeType === "negative"
+                      ? "text-red-600"
+                      : "text-gray-600"
                 }`}
               >
-                {stat.change} from last month
+                {stat.change} from{" "}
+                {stat.title === "New Users (24h)" ? "yesterday" : "last month"}
               </p>
             </CardContent>
           </Card>
@@ -92,17 +188,6 @@ export default async function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-600">
-              Activity logs will be displayed here
-            </p>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>

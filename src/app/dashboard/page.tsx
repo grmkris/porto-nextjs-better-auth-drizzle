@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/hooks/useSession";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { TRPCClientError } from "@trpc/client";
 import { useTRPC } from "../trpc/client";
@@ -70,8 +71,46 @@ export default function Dashboard() {
 
   if (session.isPending || profileLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div>Loading...</div>
+      <div className="min-h-screen p-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+            <Skeleton className="h-9 w-48 mb-6" />
+
+            {/* Profile Section Skeleton */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+              <Skeleton className="h-6 w-40 mb-4" />
+              <div className="space-y-3">
+                <Skeleton className="h-5 w-64" />
+                <Skeleton className="h-5 w-72" />
+                <Skeleton className="h-5 w-80" />
+              </div>
+            </div>
+
+            {/* Wallets Section Skeleton */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+              <Skeleton className="h-6 w-40 mb-4" />
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-96" />
+                <Skeleton className="h-5 w-96" />
+              </div>
+            </div>
+
+            {/* Stats Section Skeleton */}
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+              <Skeleton className="h-6 w-40 mb-4" />
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-60" />
+                <Skeleton className="h-5 w-60" />
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-5 w-52" />
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <Skeleton className="h-10 w-24" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -171,7 +210,10 @@ export default function Dashboard() {
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
             <h3 className="text-lg font-semibold mb-4">Connected Wallets</h3>
             {walletsLoading ? (
-              <div>Loading wallets...</div>
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-full" />
+                <Skeleton className="h-5 w-full" />
+              </div>
             ) : walletAddresses && walletAddresses.length > 0 ? (
               <div className="space-y-2">
                 {walletAddresses.map((wallet) => (
@@ -204,7 +246,12 @@ export default function Dashboard() {
           <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
             <h3 className="text-lg font-semibold mb-4">Account Statistics</h3>
             {statsLoading ? (
-              <div>Loading stats...</div>
+              <div className="space-y-2">
+                <Skeleton className="h-5 w-60" />
+                <Skeleton className="h-5 w-60" />
+                <Skeleton className="h-5 w-48" />
+                <Skeleton className="h-5 w-52" />
+              </div>
             ) : userStats ? (
               <div className="space-y-2">
                 <div>
