@@ -1,75 +1,31 @@
 "use client";
 
-import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { Button } from "@/components/ui/button";
-import { authClient, siweNonce, siweVerify } from "@/lib/auth-client";
-import { createSiweMessage } from "viem/siwe";
+import { authClient } from "@/lib/auth-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Wallet,
-  ShieldCheck,
-  Loader2,
-  AlertCircle,
-  LogOut,
-  Check,
-} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { Wallet, ShieldCheck, Loader2, LogOut } from "lucide-react";
 import { useSession } from "@/hooks/useSession";
-import { cn } from "@/lib/utils";
 
 export function PortoConnect() {
   const account = useAccount();
   const { disconnect } = useDisconnect();
-  const { connectors, connect } = useConnect();
-  const signMessage = useSignMessage();
-  const session = useSession();
   const router = useRouter();
+  const { connectors, connect } = useConnect({
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries();
+        router.push("/dashboard");
+      },
+    },
+  });
+  const session = useSession();
   const queryClient = useQueryClient();
 
   const connector = connectors.find(
     (connector) => connector.id === "xyz.ithaca.porto",
   )!;
-
-  const signInMutation = useMutation({
-    mutationFn: async () => {
-      if (!account.address) {
-        throw new Error("Address and chainId are required");
-      }
-
-      // 1. Get nonce from server
-      const nonceResponse = await siweNonce(account.address);
-      const nonce = nonceResponse.nonce;
-
-      // 2. Create SIWE message
-      const message = createSiweMessage({
-        address: account.address,
-        chainId: account.chainId!,
-        domain: window.location.host,
-        nonce,
-        uri: window.location.origin,
-        version: "1",
-        statement: "Sign in with Ethereum to Unite DeFi",
-      });
-
-      // 3. Sign message with wallet
-      const signature = await signMessage.signMessageAsync({
-        message,
-      });
-
-      // 4. Verify signature with Better Auth
-      const verifyResponse = await siweVerify({
-        message,
-        signature,
-        walletAddress: account.address,
-      });
-
-      return verifyResponse;
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries();
-      router.push("/dashboard");
-    },
-  });
 
   const signOutMutation = useMutation({
     mutationFn: () => authClient.signOut(),
@@ -81,7 +37,23 @@ export function PortoConnect() {
   // State 1: Not connected to wallet
   if (!account.address) {
     return (
-      <Button onClick={() => connect({ connector })} size="lg">
+      <Button
+        onClick={() =>
+          connect({
+            connector,
+            capabilities: {
+              signInWithEthereum: {
+                authUrl: {
+                  logout: "/api/auth/sign-out",
+                  nonce: "/api/auth/siwe/nonce",
+                  verify: "/api/auth/siwe/verify",
+                },
+              },
+            },
+          })
+        }
+        size="lg"
+      >
         <Wallet className="h-5 w-5" />
         Connect Porto Wallet
       </Button>
@@ -109,26 +81,6 @@ export function PortoConnect() {
             disconnect
           </button>
         </div>
-
-        <Button
-          onClick={() => signInMutation.mutate()}
-          disabled={signInMutation.isPending}
-          className="w-full"
-        >
-          {signInMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <ShieldCheck className="h-4 w-4" />
-          )}
-          {signInMutation.isPending ? "Signing in..." : "Sign in with Ethereum"}
-        </Button>
-
-        {signInMutation.error && (
-          <div className="flex items-center gap-2 text-xs text-destructive">
-            <AlertCircle className="h-3 w-3 flex-shrink-0" />
-            <span>{signInMutation.error.message}</span>
-          </div>
-        )}
       </div>
     );
   }
