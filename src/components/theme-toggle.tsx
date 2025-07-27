@@ -17,17 +17,19 @@ import {
 import { useTheme } from "@/components/theme-provider";
 import { themes } from "@/config/themes";
 
-export function ThemeToggle() {
+export function ThemeToggle(props: { button?: React.ReactNode }) {
   const { theme, mode, setTheme, setMode } = useTheme();
+
+  const button = props.button ?? (
+    <Button variant="secondary" size="icon" className="h-8 w-8">
+      <Palette />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
+  );
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon">
-          <Palette className="h-[1.2rem] w-[1.2rem]" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={theme.id} onValueChange={setTheme}>
@@ -37,9 +39,9 @@ export function ThemeToggle() {
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>
-        
+
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
         <DropdownMenuItem onClick={() => setMode("light")}>
           <Sun className="mr-2 h-4 w-4" />

@@ -1,0 +1,1934 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "V5.0 API Docs",
+    "version": "v5.0"
+  },
+  "paths": {
+    "/portfolio/v5.0/general/status": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Check if portfolio service is available",
+        "description": "Check if portfolio service is available",
+        "operationId": "is_available_portfolio_v5_0_general_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_ApiStatusResponse_"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/address_check": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Check addresses for compliance",
+        "description": "Check addresses for various limits, blacklist etc",
+        "operationId": "wrapper_portfolio_v5_0_general_address_check_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "description": "Addresses",
+              "title": "Addresses"
+            },
+            "description": "Addresses"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Chain id or nothing",
+              "title": "Chain Id"
+            },
+            "description": "Chain id or nothing"
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Get response from cache",
+              "default": false,
+              "title": "Use Cache"
+            },
+            "description": "Get response from cache"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/supported_chains": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get supported chains",
+        "description": "Get supported chains",
+        "operationId": "get_supported_chains_portfolio_v5_0_general_supported_chains_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SupportedChainResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Supported Chains Portfolio V5 0 General Supported Chains Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/supported_protocols": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get supported protocols",
+        "description": "Get supported protocols",
+        "operationId": "get_supported_protocols_portfolio_v5_0_general_supported_protocols_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_list_SupportedProtocolGroupResponse__"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/current_value": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get current portfolio value breakdown",
+        "description": "Get current portfolio value breakdown: by address, by category, by protocol group, by chain",
+        "operationId": "wrapper_portfolio_v5_0_general_current_value_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "title": "Addresses"
+            },
+            "example": "0xd470055c6189b921c4d44b3d277ad868f79c0f75"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Chain Id"
+            }
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Get response from cache",
+              "default": false,
+              "title": "Use Cache"
+            },
+            "description": "Get response from cache"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_CurrentValueResponse_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/chart": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "General value chart",
+        "description": "Returns value chart for all supported protocols and tokens (coming soon).",
+        "operationId": "wrapper_portfolio_v5_0_general_chart_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "description": "Addresses",
+              "title": "Addresses"
+            },
+            "description": "Addresses",
+            "example": "0xe3411d7ba6e99d4228e304ed1bbb4dff14813070"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Chain id or nothing",
+              "title": "Chain Id"
+            },
+            "description": "Chain id or nothing"
+          },
+          {
+            "name": "timerange",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/TimeRange",
+              "description": "Timerange",
+              "default": "1year"
+            },
+            "description": "Timerange"
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Get response from cache",
+              "default": false,
+              "title": "Use Cache"
+            },
+            "description": "Get response from cache"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BaseResponseEnvelope_list_AssetChartResponseItem__ValueChartResponseMeta_"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/general/report": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Overview report",
+        "description": "Provides csv report on tokens and protocols overview details",
+        "operationId": "get_report_portfolio_v5_0_general_report_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "description": "Addresses",
+              "title": "Addresses"
+            },
+            "description": "Addresses"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Chain id or nothing",
+              "title": "Chain Id"
+            },
+            "description": "Chain id or nothing"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/protocols/snapshot": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get protocols snapshot",
+        "description": "Get protocols snapshot: underlying tokens, rewards, fees, etc. for all supported protocols on current block or at the specified timestamp",
+        "operationId": "get_protocols_snapshot_portfolio_v5_0_protocols_snapshot_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "title": "Addresses"
+            },
+            "example": "0xd470055c6189b921c4d44b3d277ad868f79c0f75"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Chain Id"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "exclusiveMaximum": 4294967296
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Timestamp"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_list_AdapterResult__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/protocols/metrics": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get protocols metrics",
+        "description": "Get protocols metrics",
+        "operationId": "wrapper_portfolio_v5_0_protocols_metrics_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "title": "Addresses"
+            },
+            "example": "0xd470055c6189b921c4d44b3d277ad868f79c0f75"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Chain Id"
+            }
+          },
+          {
+            "name": "protocol_group_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Protocol Group Id"
+            }
+          },
+          {
+            "name": "contract_address",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 42,
+                  "maxLength": 42
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Contract Address"
+            }
+          },
+          {
+            "name": "token_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Token Id"
+            }
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Get response from cache",
+              "default": false,
+              "title": "Use Cache"
+            },
+            "description": "Get response from cache"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_list_HistoryMetrics__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/tokens/snapshot": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get tokens snapshot",
+        "description": "Get tokens snapshot",
+        "operationId": "get_tokens_snapshot_portfolio_v5_0_tokens_snapshot_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "title": "Addresses"
+            },
+            "example": "0xd470055c6189b921c4d44b3d277ad868f79c0f75"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Chain Id"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "exclusiveMaximum": 4294967296
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Timestamp"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdapterResult"
+                  },
+                  "title": "Response Get Tokens Snapshot Portfolio V5 0 Tokens Snapshot Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/portfolio/v5.0/tokens/metrics": {
+      "get": {
+        "tags": ["portfolio-v5"],
+        "summary": "Get tokens metrics",
+        "description": "Get tokens metrics",
+        "operationId": "wrapper_portfolio_v5_0_tokens_metrics_get",
+        "parameters": [
+          {
+            "name": "addresses",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 42,
+                "maxLength": 42
+              },
+              "title": "Addresses"
+            },
+            "example": "0xd470055c6189b921c4d44b3d277ad868f79c0f75"
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Chain Id"
+            }
+          },
+          {
+            "name": "timerange",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TimeRange"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": "1year",
+              "title": "Timerange"
+            }
+          },
+          {
+            "name": "use_cache",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Get response from cache",
+              "default": false,
+              "title": "Use Cache"
+            },
+            "description": "Get response from cache"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseEnvelope_list_HistoryMetrics__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdapterResult": {
+        "properties": {
+          "index": {
+            "type": "string",
+            "title": "Index",
+            "example": "0x1111111111111111"
+          },
+          "chain_id": {
+            "type": "integer"
+          },
+          "contract_address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Contract Address",
+            "example": "0x1111111111111111111111111111111111111111"
+          },
+          "token_id": {
+            "type": "integer",
+            "title": "Token Id",
+            "ge": 0,
+            "lt": 1.157920892373162e77
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Address",
+            "example": "0x1111111111111111111111111111111111111111"
+          },
+          "block_number_created": {
+            "type": "integer",
+            "title": "Block Number Created",
+            "ge": 0,
+            "lt": 18446744073709552000
+          },
+          "block_number": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "ge": 0,
+                "lt": 18446744073709552000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Block Number"
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMaximum": 4294967296,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp"
+          },
+          "protocol_type": {
+            "type": "string",
+            "title": "Protocol Type"
+          },
+          "protocol_handler_id": {
+            "type": "string",
+            "title": "Protocol Handler Id"
+          },
+          "protocol_group_id": {
+            "type": "string",
+            "title": "Protocol Group Id"
+          },
+          "protocol_group_name": {
+            "type": "string",
+            "title": "Protocol Group Name"
+          },
+          "protocol_group_icon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Group Icon"
+          },
+          "protocol_sub_group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Sub Group Id"
+          },
+          "protocol_sub_group_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Sub Group Name"
+          },
+          "contract_name": {
+            "type": "string",
+            "title": "Contract Name"
+          },
+          "contract_symbol": {
+            "type": "string",
+            "title": "Contract Symbol"
+          },
+          "asset_sign": {
+            "type": "integer",
+            "title": "Asset Sign",
+            "ge": -128,
+            "lt": 128
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status",
+            "default": -1
+          },
+          "underlying_tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TokenBalance"
+            },
+            "type": "array",
+            "title": "Underlying Tokens"
+          },
+          "reward_tokens": {
+            "items": {
+              "$ref": "#/components/schemas/TokenBalance"
+            },
+            "type": "array",
+            "title": "Reward Tokens"
+          },
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd"
+          },
+          "locked": {
+            "type": "boolean",
+            "title": "Locked",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "index",
+          "chain_id",
+          "contract_address",
+          "token_id",
+          "address",
+          "block_number_created",
+          "protocol_type",
+          "protocol_handler_id",
+          "protocol_group_id",
+          "protocol_group_name",
+          "protocol_group_icon",
+          "contract_name",
+          "contract_symbol",
+          "asset_sign",
+          "value_usd"
+        ],
+        "title": "AdapterResult"
+      },
+      "AddressValue": {
+        "properties": {
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd",
+            "description": "USD value of assets in this address"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address",
+            "description": "Address"
+          }
+        },
+        "type": "object",
+        "required": ["value_usd", "address"],
+        "title": "AddressValue",
+        "description": "Value breakdown by address"
+      },
+      "ApiStatusResponse": {
+        "properties": {
+          "is_available": {
+            "type": "boolean",
+            "title": "Is Available",
+            "description": "API status"
+          }
+        },
+        "type": "object",
+        "required": ["is_available"],
+        "title": "ApiStatusResponse",
+        "description": "Response model for API status"
+      },
+      "AssetChartResponseItem": {
+        "properties": {
+          "timestamp": {
+            "type": "integer",
+            "exclusiveMaximum": 4294967296,
+            "minimum": 0,
+            "title": "Timestamp"
+          },
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd"
+          }
+        },
+        "type": "object",
+        "required": ["timestamp", "value_usd"],
+        "title": "AssetChartResponseItem"
+      },
+      "BaseResponseEnvelope_list_AssetChartResponseItem__ValueChartResponseMeta_": {
+        "properties": {
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/AssetChartResponseItem"
+            },
+            "type": "array",
+            "title": "Result"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ValueChartResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "BaseResponseEnvelope[list[AssetChartResponseItem], ValueChartResponseMeta]"
+      },
+      "CategoryValue": {
+        "properties": {
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd",
+            "description": "USD value of assets in this category"
+          },
+          "category_id": {
+            "type": "string",
+            "title": "Category Id",
+            "description": "Category identifier (tokens, native, protocols)"
+          },
+          "category_name": {
+            "type": "string",
+            "title": "Category Name",
+            "description": "Human-readable category name"
+          }
+        },
+        "type": "object",
+        "required": ["value_usd", "category_id", "category_name"],
+        "title": "CategoryValue",
+        "description": "Value breakdown by category (tokens, native, protocols)"
+      },
+      "Chain": {
+        "enum": [
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/ethereum.svg",
+            "id_num": 1,
+            "name": "eth",
+            "name_readable": "Ethereum"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/polygon_1.svg",
+            "id_num": 137,
+            "name": "polygon",
+            "name_readable": "Polygon"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/bsc_2.svg",
+            "id_num": 56,
+            "name": "bsc",
+            "name_readable": "BNB Chain"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/arbitrum_2.svg",
+            "id_num": 42161,
+            "name": "arbitrum",
+            "name_readable": "Arbitrum"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/fantom.svg",
+            "id_num": 250,
+            "name": "fantom",
+            "name_readable": "Fantom"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/gnosis.svg",
+            "id_num": 100,
+            "name": "gnosis",
+            "name_readable": "Gnosis"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/aurora.svg",
+            "id_num": 1313161554,
+            "name": "aurora",
+            "name_readable": "Aurora"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/avalanche.svg",
+            "id_num": 43114,
+            "name": "avax",
+            "name_readable": "Avalanche"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/optimism.svg",
+            "id_num": 10,
+            "name": "optimism",
+            "name_readable": "Optimism"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/klaytn.svg",
+            "id_num": 8217,
+            "name": "klaytn",
+            "name_readable": "Klaytn"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/zksync-era.svg",
+            "id_num": 324,
+            "name": "zksyncera",
+            "name_readable": "zkSync Era"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/base.svg",
+            "id_num": 8453,
+            "name": "base",
+            "name_readable": "Base"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/linea.svg",
+            "id_num": 59144,
+            "name": "linea",
+            "name_readable": "Linea"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/unichain.svg",
+            "id_num": 130,
+            "name": "unichain",
+            "name_readable": "Unichain"
+          },
+          {
+            "icon_url": "https://app.1inch.io/assets/images/network-logos/sonic.svg",
+            "id_num": 146,
+            "name": "sonic",
+            "name_readable": "Sonic"
+          }
+        ],
+        "title": "Chain"
+      },
+      "ChainId": {
+        "type": "integer",
+        "enum": [
+          1, 137, 56, 42161, 43114, 10, 100, 1313161554, 250, 8217, 324, 8453,
+          59144, 146, 130
+        ],
+        "title": "ChainId"
+      },
+      "ChainValue": {
+        "properties": {
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd",
+            "description": "USD value of assets on this chain"
+          },
+          "chain_id": {
+            "type": "integer",
+            "title": "Chain Id",
+            "description": "Chain identifier"
+          },
+          "chain_name": {
+            "type": "string",
+            "title": "Chain Name",
+            "description": "Human-readable chain name"
+          }
+        },
+        "type": "object",
+        "required": ["value_usd", "chain_id", "chain_name"],
+        "title": "ChainValue",
+        "description": "Value breakdown by blockchain"
+      },
+      "CurrentValueResponse": {
+        "properties": {
+          "total": {
+            "type": "number",
+            "title": "Total",
+            "description": "Total USD value of all assets"
+          },
+          "by_address": {
+            "items": {
+              "$ref": "#/components/schemas/AddressValue"
+            },
+            "type": "array",
+            "title": "By Address",
+            "description": "Value breakdown by address"
+          },
+          "by_category": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryValue"
+            },
+            "type": "array",
+            "title": "By Category",
+            "description": "Value breakdown by category"
+          },
+          "by_protocol_group": {
+            "items": {
+              "$ref": "#/components/schemas/ProtocolGroupValue"
+            },
+            "type": "array",
+            "title": "By Protocol Group",
+            "description": "Value breakdown by protocol group"
+          },
+          "by_chain": {
+            "items": {
+              "$ref": "#/components/schemas/ChainValue"
+            },
+            "type": "array",
+            "title": "By Chain",
+            "description": "Value breakdown by blockchain"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "by_address",
+          "by_category",
+          "by_protocol_group",
+          "by_chain"
+        ],
+        "title": "CurrentValueResponse",
+        "description": "Response model for current portfolio value"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HistoryMetrics": {
+        "properties": {
+          "index": {
+            "type": "string",
+            "title": "Index",
+            "example": "0x1111111111111111"
+          },
+          "profit_abs_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Profit Abs Usd"
+          },
+          "roi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Roi"
+          },
+          "weighted_apr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weighted Apr"
+          },
+          "holding_time_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Holding Time Days"
+          },
+          "rewards_tokens": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TokenBalance"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rewards Tokens"
+          },
+          "rewards_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rewards Usd"
+          },
+          "claimed_fees": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TokenBalance"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed Fees"
+          },
+          "unclaimed_fees": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TokenBalance"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unclaimed Fees"
+          },
+          "impermanent_loss": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TokenBalance"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impermanent Loss"
+          },
+          "claimed_fees_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claimed Fees Usd"
+          },
+          "unclaimed_fees_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unclaimed Fees Usd"
+          },
+          "impermanent_loss_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Impermanent Loss Usd"
+          }
+        },
+        "type": "object",
+        "required": ["index"],
+        "title": "HistoryMetrics"
+      },
+      "MultiWalletPositionIndex": {
+        "properties": {
+          "addresses": {
+            "items": {
+              "type": "string",
+              "maxLength": 42,
+              "minLength": 42
+            },
+            "type": "array",
+            "title": "Addresses"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/Chain"
+          },
+          "contract_address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Contract Address"
+          },
+          "token_id": {
+            "type": "integer",
+            "title": "Token Id",
+            "default": 0,
+            "ge": 0,
+            "lt": 1.157920892373162e77
+          },
+          "protocol_sub_group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Sub Group Id"
+          }
+        },
+        "type": "object",
+        "required": ["addresses", "chain", "contract_address"],
+        "title": "MultiWalletPositionIndex"
+      },
+      "PositionIndex": {
+        "properties": {
+          "address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Address"
+          },
+          "chain": {
+            "$ref": "#/components/schemas/Chain"
+          },
+          "contract_address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Contract Address"
+          },
+          "token_id": {
+            "type": "integer",
+            "title": "Token Id",
+            "default": 0,
+            "ge": 0,
+            "lt": 1.157920892373162e77
+          },
+          "protocol_sub_group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Sub Group Id"
+          }
+        },
+        "type": "object",
+        "required": ["address", "chain", "contract_address"],
+        "title": "PositionIndex"
+      },
+      "ProcessingInfo": {
+        "properties": {
+          "click_time": {
+            "type": "number",
+            "title": "Click Time",
+            "default": 0
+          },
+          "node_time": {
+            "type": "number",
+            "title": "Node Time",
+            "default": 0
+          },
+          "microservices_time": {
+            "type": "number",
+            "title": "Microservices Time",
+            "default": 0
+          },
+          "redis_time": {
+            "type": "number",
+            "title": "Redis Time",
+            "default": 0
+          },
+          "total_time": {
+            "type": "number",
+            "title": "Total Time",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "ProcessingInfo"
+      },
+      "ProtocolGroupValue": {
+        "properties": {
+          "value_usd": {
+            "type": "number",
+            "title": "Value Usd",
+            "description": "USD value of assets in this protocol group"
+          },
+          "protocol_group_id": {
+            "type": "string",
+            "title": "Protocol Group Id",
+            "description": "Protocol group identifier"
+          },
+          "protocol_group_name": {
+            "type": "string",
+            "title": "Protocol Group Name",
+            "description": "Human-readable protocol group name"
+          }
+        },
+        "type": "object",
+        "required": ["value_usd", "protocol_group_id", "protocol_group_name"],
+        "title": "ProtocolGroupValue",
+        "description": "Value breakdown by protocol group"
+      },
+      "ResponseEnvelope_ApiStatusResponse_": {
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ApiStatusResponse"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "ResponseEnvelope[ApiStatusResponse]"
+      },
+      "ResponseEnvelope_CurrentValueResponse_": {
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/CurrentValueResponse"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "ResponseEnvelope[CurrentValueResponse]"
+      },
+      "ResponseEnvelope_list_AdapterResult__": {
+        "properties": {
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/AdapterResult"
+            },
+            "type": "array",
+            "title": "Result"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "ResponseEnvelope[list[AdapterResult]]"
+      },
+      "ResponseEnvelope_list_HistoryMetrics__": {
+        "properties": {
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryMetrics"
+            },
+            "type": "array",
+            "title": "Result"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "ResponseEnvelope[list[HistoryMetrics]]"
+      },
+      "ResponseEnvelope_list_SupportedProtocolGroupResponse__": {
+        "properties": {
+          "result": {
+            "items": {
+              "$ref": "#/components/schemas/SupportedProtocolGroupResponse"
+            },
+            "type": "array",
+            "title": "Result"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResponseMeta"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": ["result"],
+        "title": "ResponseEnvelope[list[SupportedProtocolGroupResponse]]"
+      },
+      "ResponseMeta": {
+        "properties": {
+          "cached_at": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cached At"
+          },
+          "system": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProcessingInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ResponseMeta"
+      },
+      "Status": {
+        "type": "integer",
+        "enum": [1, 0, -1],
+        "title": "Status"
+      },
+      "SupportedChainResponse": {
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "title": "Chain Id",
+            "description": "Chain identifier"
+          },
+          "chain_name": {
+            "type": "string",
+            "title": "Chain Name",
+            "description": "Human-readable chain name"
+          },
+          "chain_icon": {
+            "type": "string",
+            "title": "Chain Icon",
+            "description": "Chain icon URL"
+          },
+          "native_token": {
+            "$ref": "#/components/schemas/Token",
+            "description": "Native token"
+          }
+        },
+        "type": "object",
+        "required": ["chain_id", "chain_name", "chain_icon", "native_token"],
+        "title": "SupportedChainResponse",
+        "description": "Response model for supported chains"
+      },
+      "SupportedProtocolGroupResponse": {
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "title": "Chain Id",
+            "description": "Chain identifier"
+          },
+          "protocol_group_id": {
+            "type": "string",
+            "title": "Protocol Group Id",
+            "description": "Protocol group identifier"
+          },
+          "protocol_group_name": {
+            "type": "string",
+            "title": "Protocol Group Name",
+            "description": "Human-readable protocol group name"
+          },
+          "protocol_group_icon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protocol Group Icon",
+            "description": "Protocol group icon URL"
+          }
+        },
+        "type": "object",
+        "required": [
+          "chain_id",
+          "protocol_group_id",
+          "protocol_group_name",
+          "protocol_group_icon"
+        ],
+        "title": "SupportedProtocolGroupResponse",
+        "description": "Response model for supported protocol groups"
+      },
+      "TimeRange": {
+        "type": "string",
+        "enum": ["1day", "1week", "1month", "1year", "3years"],
+        "title": "TimeRange"
+      },
+      "Token": {
+        "properties": {
+          "chain": {
+            "type": "integer"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Address",
+            "example": "0x0000000000000000000000000000000000000000"
+          },
+          "decimals": {
+            "type": "integer",
+            "title": "Decimals",
+            "ge": 0,
+            "lt": 256
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": ["chain", "address", "decimals"],
+        "title": "Token"
+      },
+      "TokenBalance": {
+        "properties": {
+          "chain": {
+            "type": "integer"
+          },
+          "address": {
+            "type": "string",
+            "maxLength": 42,
+            "minLength": 42,
+            "title": "Address",
+            "example": "0x1111111111111111111111111111111111111111"
+          },
+          "decimals": {
+            "type": "integer",
+            "title": "Decimals",
+            "ge": 0,
+            "lt": 256
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "amount": {
+            "type": "number",
+            "title": "Amount",
+            "default": 0
+          },
+          "price_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price Usd",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "required": ["chain", "address", "decimals"],
+        "title": "TokenBalance"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "ValueChartDataIssues": {
+        "properties": {
+          "price_outliers": {
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ChainId"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 42,
+                    "minLength": 42
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Price Outliers"
+          }
+        },
+        "type": "object",
+        "title": "ValueChartDataIssues"
+      },
+      "ValueChartResponseMeta": {
+        "properties": {
+          "cached_at": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cached At"
+          },
+          "system": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProcessingInfo"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "data_issues": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ValueChartDataIssues"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "ValueChartResponseMeta"
+      }
+    }
+  }
+}

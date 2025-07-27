@@ -1,0 +1,347 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1.1/42161": {
+      "get": {
+        "description": "Prices for whitelisted tokens",
+        "operationId": "ChainController_whitelist_v1.1",
+        "parameters": [
+          {
+            "name": "currency",
+            "required": false,
+            "in": "query",
+            "description": "If no currency provided, then price returned in native Wei",
+            "schema": {
+              "enum": [
+                "USD",
+                "AED",
+                "ARS",
+                "AUD",
+                "BDT",
+                "BHD",
+                "BMD",
+                "BRL",
+                "CAD",
+                "CHF",
+                "CLP",
+                "CNY",
+                "CZK",
+                "DKK",
+                "EUR",
+                "GBP",
+                "HKD",
+                "HUF",
+                "IDR",
+                "ILS",
+                "INR",
+                "JPY",
+                "KRW",
+                "KWD",
+                "LKR",
+                "MMK",
+                "MXN",
+                "MYR",
+                "NGN",
+                "NOK",
+                "NZD",
+                "PHP",
+                "PKR",
+                "PLN",
+                "RUB",
+                "SAR",
+                "SEK",
+                "SGD",
+                "THB",
+                "TRY",
+                "TWD",
+                "UAH",
+                "VEF",
+                "VND",
+                "ZAR"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prices for whitelisted tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "1000000000000000000",
+                    "0x111111111117dc0aa78b770fa6a738034120c302": "170140779137821"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Prices for whitelisted tokens",
+        "tags": ["Prices"]
+      },
+      "post": {
+        "description": "Returns prices for requested tokens",
+        "operationId": "ChainController_byAddressesPost_v1.1",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetPricesRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Prices for requested tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "1000000000000000000",
+                    "0x111111111117dc0aa78b770fa6a738034120c302": "170140779137821"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "enum": ["Bad Request"]
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "enum": [400]
+                    },
+                    "meta": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "address"
+                          },
+                          "value": {
+                            "example": "0xbad_address"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Prices for requested tokens",
+        "tags": ["Prices"]
+      }
+    },
+    "/v1.1/42161/currencies": {
+      "get": {
+        "description": "Custom currencies",
+        "operationId": "ChainController_getCustomCurrencies_v1.1",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of supported currencies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrenciesResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "List of custom currencies",
+        "tags": ["Prices"]
+      }
+    },
+    "/v1.1/42161/{addresses}": {
+      "get": {
+        "description": "Returns prices for requested tokens",
+        "operationId": "ChainController_byAddresses_v1.1",
+        "parameters": [
+          {
+            "name": "addresses",
+            "required": true,
+            "in": "path",
+            "description": "To get many prices pass addresses separated by comma",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "currency",
+            "required": false,
+            "in": "query",
+            "description": "If no currency provided, then price returned in native Wei",
+            "schema": {
+              "enum": [
+                "USD",
+                "AED",
+                "ARS",
+                "AUD",
+                "BDT",
+                "BHD",
+                "BMD",
+                "BRL",
+                "CAD",
+                "CHF",
+                "CLP",
+                "CNY",
+                "CZK",
+                "DKK",
+                "EUR",
+                "GBP",
+                "HKD",
+                "HUF",
+                "IDR",
+                "ILS",
+                "INR",
+                "JPY",
+                "KRW",
+                "KWD",
+                "LKR",
+                "MMK",
+                "MXN",
+                "MYR",
+                "NGN",
+                "NOK",
+                "NZD",
+                "PHP",
+                "PKR",
+                "PLN",
+                "RUB",
+                "SAR",
+                "SEK",
+                "SGD",
+                "THB",
+                "TRY",
+                "TWD",
+                "UAH",
+                "VEF",
+                "VND",
+                "ZAR"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Prices for whitelisted tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "1000000000000000000",
+                    "0x111111111117dc0aa78b770fa6a738034120c302": "170140779137821"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "enum": ["Bad Request"]
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "statusCode": {
+                      "enum": [400]
+                    },
+                    "meta": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "address"
+                          },
+                          "value": {
+                            "example": "0xbad_address"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Prices for requested tokens",
+        "tags": ["Prices"]
+      }
+    }
+  },
+  "info": {
+    "title": "1inch Spot Price API",
+    "description": "\n<h2>Arbitrum Network</h2>\nUsing 1inch token prices API, you can find out onchain price of tradable tokens. All prices present in native currency <a href='https://www.investopedia.com/terms/w/wei.asp' target='_blank'>WEI<a/>.",
+    "version": "2.1.76",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CurrenciesResponseDto": {
+        "type": "object",
+        "properties": {
+          "codes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": ["codes"]
+      },
+      "GetPricesRequestDto": {
+        "type": "object",
+        "properties": {
+          "tokens": {
+            "example": ["0x111111111117dc0aa78b770fa6a738034120c302"],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "currency": {
+            "type": "string",
+            "enum": ["USD"],
+            "description": "If no currency provided, then price returned in native Wei"
+          }
+        },
+        "required": ["tokens"]
+      }
+    }
+  }
+}

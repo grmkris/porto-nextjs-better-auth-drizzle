@@ -1,7 +1,11 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { cookies } from "next/headers";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 interface AdminLayoutProps {
@@ -36,9 +40,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </header>
         <main className="flex-1 overflow-y-auto">
-          <div className="container py-6">
-            {children}
-          </div>
+          <div className="container px-4 py-6 lg:px-8">{children}</div>
         </main>
       </SidebarInset>
     </SidebarProvider>

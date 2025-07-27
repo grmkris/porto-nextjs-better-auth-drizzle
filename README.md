@@ -14,6 +14,7 @@ A production-ready starter kit for building full-stack dApps with Next.js 15, Po
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - [Next.js 15.4](https://nextjs.org/) - React framework with App Router
 - [React 19](https://react.dev/) - UI library
 - [TailwindCSS v4](https://tailwindcss.com/) - Utility-first CSS
@@ -22,6 +23,7 @@ A production-ready starter kit for building full-stack dApps with Next.js 15, Po
 - [Radix UI](https://www.radix-ui.com/) - Headless UI components
 
 ### Backend
+
 - [tRPC v11](https://trpc.io/) - Type-safe API layer
 - [Better Auth](https://better-auth.com/) - Authentication library with SIWE support
 - [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM
@@ -174,12 +176,12 @@ This starter is optimized for serverless deployment but can run anywhere Node.js
 
 ## 🔑 Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|-----------|
-| `DATABASE_URL` | PostgreSQL connection string | ✅ |
-| `BETTER_AUTH_SECRET` | Secret for signing sessions | ✅ |
-| `BETTER_AUTH_URL` | Your app's URL | ✅ |
-| `NEXT_PUBLIC_APP_URL` | Public app URL | ✅ |
+| Variable              | Description                  | Required |
+| --------------------- | ---------------------------- | -------- |
+| `DATABASE_URL`        | PostgreSQL connection string | ✅       |
+| `BETTER_AUTH_SECRET`  | Secret for signing sessions  | ✅       |
+| `BETTER_AUTH_URL`     | Your app's URL               | ✅       |
+| `NEXT_PUBLIC_APP_URL` | Public app URL               | ✅       |
 
 ## 🤝 Contributing
 

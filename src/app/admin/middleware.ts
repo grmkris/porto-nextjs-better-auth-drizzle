@@ -14,11 +14,8 @@ export async function checkAndSetFirstAdmin(userId: string) {
 
   if (!hasAdmin) {
     // No admin exists, make this user the admin
-    await db
-      .update(user)
-      .set({ role: "admin" })
-      .where(eq(user.id, userId));
-    
+    await db.update(user).set({ role: "admin" }).where(eq(user.id, userId));
+
     return true; // User was made admin
   }
 

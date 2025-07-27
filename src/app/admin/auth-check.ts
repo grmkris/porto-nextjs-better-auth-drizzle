@@ -14,7 +14,7 @@ export async function requireAdmin() {
 
   // Check if user should be made admin (first user to access admin)
   const wasSetAsAdmin = await checkAndSetFirstAdmin(session.user.id);
-  
+
   // Refresh session if user was just made admin
   if (wasSetAsAdmin) {
     redirect("/admin");

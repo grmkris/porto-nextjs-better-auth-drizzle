@@ -21,7 +21,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal, Search, Ban, UserCheck, Trash, Eye } from "lucide-react";
+import {
+  MoreHorizontal,
+  Search,
+  Ban,
+  UserCheck,
+  Trash,
+  Eye,
+} from "lucide-react";
 import { format } from "date-fns";
 
 export default function UsersClient() {
@@ -70,7 +77,7 @@ export default function UsersClient() {
 
   const handleDeleteUser = async (userId: string) => {
     if (!confirm("Are you sure you want to delete this user?")) return;
-    
+
     try {
       await authClient.admin.removeUser({ userId });
       refetch();
@@ -85,7 +92,9 @@ export default function UsersClient() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-        <p className="text-gray-600 mt-2">Manage all users and their permissions</p>
+        <p className="text-gray-600 mt-2">
+          Manage all users and their permissions
+        </p>
       </div>
 
       <Card>
@@ -131,7 +140,11 @@ export default function UsersClient() {
                       </TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>
-                        <Badge variant={user.role === "admin" ? "default" : "secondary"}>
+                        <Badge
+                          variant={
+                            user.role === "admin" ? "default" : "secondary"
+                          }
+                        >
                           {user.role || "user"}
                         </Badge>
                       </TableCell>
@@ -158,12 +171,16 @@ export default function UsersClient() {
                               View Details
                             </DropdownMenuItem>
                             {user.banned ? (
-                              <DropdownMenuItem onClick={() => handleUnbanUser(user.id)}>
+                              <DropdownMenuItem
+                                onClick={() => handleUnbanUser(user.id)}
+                              >
                                 <UserCheck className="mr-2 h-4 w-4" />
                                 Unban User
                               </DropdownMenuItem>
                             ) : (
-                              <DropdownMenuItem onClick={() => handleBanUser(user.id)}>
+                              <DropdownMenuItem
+                                onClick={() => handleBanUser(user.id)}
+                              >
                                 <Ban className="mr-2 h-4 w-4" />
                                 Ban User
                               </DropdownMenuItem>
@@ -187,7 +204,8 @@ export default function UsersClient() {
                 <div className="flex items-center justify-between mt-4">
                   <div className="text-sm text-gray-600">
                     Showing {(currentPage - 1) * pageSize + 1} to{" "}
-                    {Math.min(currentPage * pageSize, data.total)} of {data.total} users
+                    {Math.min(currentPage * pageSize, data.total)} of{" "}
+                    {data.total} users
                   </div>
                   <div className="flex gap-2">
                     <Button

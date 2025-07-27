@@ -61,7 +61,9 @@ export default async function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome back, {currentSession?.user?.name || "Admin"}</p>
+        <p className="text-gray-600 mt-2">
+          Welcome back, {currentSession?.user?.name || "Admin"}
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -75,9 +77,13 @@ export default async function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className={`text-xs ${
-                stat.changeType === "positive" ? "text-green-600" : "text-red-600"
-              }`}>
+              <p
+                className={`text-xs ${
+                  stat.changeType === "positive"
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
                 {stat.change} from last month
               </p>
             </CardContent>
@@ -91,7 +97,9 @@ export default async function AdminDashboard() {
             <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">Activity logs will be displayed here</p>
+            <p className="text-gray-600">
+              Activity logs will be displayed here
+            </p>
           </CardContent>
         </Card>
 
@@ -105,14 +113,18 @@ export default async function AdminDashboard() {
               className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
             >
               <div className="font-medium">Manage Users</div>
-              <div className="text-sm text-gray-600">View and manage all users</div>
+              <div className="text-sm text-gray-600">
+                View and manage all users
+              </div>
             </a>
             <a
               href="/admin/sessions"
               className="block p-3 rounded-lg border hover:bg-gray-50 transition-colors"
             >
               <div className="font-medium">Active Sessions</div>
-              <div className="text-sm text-gray-600">Monitor and manage sessions</div>
+              <div className="text-sm text-gray-600">
+                Monitor and manage sessions
+              </div>
             </a>
           </CardContent>
         </Card>

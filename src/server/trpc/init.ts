@@ -56,7 +56,7 @@ export const protectedProcedure = t.procedure.use(async (opts) => {
 
 export const adminProcedure = protectedProcedure.use(async (opts) => {
   const { ctx } = opts;
-  
+
   // Check if user has admin role
   if (ctx.user?.role !== "admin") {
     throw new TRPCError({

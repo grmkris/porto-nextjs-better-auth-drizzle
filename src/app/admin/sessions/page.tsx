@@ -37,9 +37,13 @@ export default async function SessionsPage() {
 
   const getDeviceIcon = (userAgent: string | null) => {
     if (!userAgent) return <Globe className="h-4 w-4" />;
-    
+
     const ua = userAgent.toLowerCase();
-    if (ua.includes("mobile") || ua.includes("android") || ua.includes("iphone")) {
+    if (
+      ua.includes("mobile") ||
+      ua.includes("android") ||
+      ua.includes("iphone")
+    ) {
       return <Smartphone className="h-4 w-4" />;
     }
     return <Monitor className="h-4 w-4" />;
@@ -47,7 +51,7 @@ export default async function SessionsPage() {
 
   const getDeviceInfo = (userAgent: string | null) => {
     if (!userAgent) return "Unknown Device";
-    
+
     // Simple parsing - in production, use a proper user agent parser
     const ua = userAgent.toLowerCase();
     if (ua.includes("chrome")) return "Chrome";
@@ -104,9 +108,7 @@ export default async function SessionsPage() {
                         <span>{getDeviceInfo(sessionData.userAgent)}</span>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      {sessionData.ipAddress || "Unknown"}
-                    </TableCell>
+                    <TableCell>{sessionData.ipAddress || "Unknown"}</TableCell>
                     <TableCell>
                       {format(new Date(sessionData.createdAt), "MMM d, HH:mm")}
                     </TableCell>

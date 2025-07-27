@@ -5,7 +5,14 @@ import { Button } from "@/components/ui/button";
 import { authClient, siweNonce, siweVerify } from "@/lib/auth-client";
 import { createSiweMessage } from "viem/siwe";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Wallet, ShieldCheck, Loader2, AlertCircle, LogOut, Check } from "lucide-react";
+import {
+  Wallet,
+  ShieldCheck,
+  Loader2,
+  AlertCircle,
+  LogOut,
+  Check,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
 import { cn } from "@/lib/utils";
@@ -74,10 +81,7 @@ export function PortoConnect() {
   // State 1: Not connected to wallet
   if (!account.address) {
     return (
-      <Button 
-        onClick={() => connect({ connector })} 
-        size="lg"
-      >
+      <Button onClick={() => connect({ connector })} size="lg">
         <Wallet className="h-5 w-5" />
         Connect Porto Wallet
       </Button>
@@ -136,7 +140,9 @@ export function PortoConnect() {
         <ShieldCheck className="h-4 w-4 text-primary" />
         <div className="flex-1">
           <p className="text-sm font-medium">
-            {session.data.data.user.name || session.data.data.user.email || 'User'}
+            {session.data.data.user.name ||
+              session.data.data.user.email ||
+              "User"}
           </p>
           <p className="text-xs text-muted-foreground">Authenticated</p>
         </div>

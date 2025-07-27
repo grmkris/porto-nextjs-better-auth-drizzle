@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { PortoConnect } from "@/components/features/PortoConnect";
 import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
@@ -46,9 +52,12 @@ export default function AdminLoginPage() {
         <CardContent>
           <div className="space-y-4">
             <PortoConnect />
-            
+
             <div className="text-center text-sm text-gray-600">
-              <p>First-time admin? The first user to access this page will automatically become an admin.</p>
+              <p>
+                First-time admin? The first user to access this page will
+                automatically become an admin.
+              </p>
             </div>
           </div>
         </CardContent>

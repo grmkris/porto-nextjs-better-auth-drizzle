@@ -315,16 +315,16 @@ export const themes: Theme[] = [
 ];
 
 export function getThemeById(id: string): Theme | undefined {
-  return themes.find(theme => theme.id === id);
+  return themes.find((theme) => theme.id === id);
 }
 
-export function applyTheme(theme: Theme, mode: 'light' | 'dark') {
+export function applyTheme(theme: Theme, mode: "light" | "dark") {
   const root = document.documentElement;
   const cssVars = theme.cssVars[mode];
-  
+
   Object.entries(cssVars).forEach(([key, value]) => {
     root.style.setProperty(key, value);
   });
-  
-  root.setAttribute('data-theme', theme.id);
+
+  root.setAttribute("data-theme", theme.id);
 }

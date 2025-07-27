@@ -7,7 +7,9 @@ export default async function ActivityPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Activity Logs</h1>
-        <p className="text-gray-600 mt-2">Track all admin actions and user activities</p>
+        <p className="text-gray-600 mt-2">
+          Track all admin actions and user activities
+        </p>
       </div>
 
       <Card>

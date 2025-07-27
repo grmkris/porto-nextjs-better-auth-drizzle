@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Home,
   Users,
@@ -12,10 +12,12 @@ import {
   ChevronUp,
   Settings,
   LayoutDashboard,
-} from "lucide-react"
+  UserIcon,
+  Palette,
+} from "lucide-react";
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
+import { SearchForm } from "@/components/search-form";
+import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -31,23 +33,28 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  SidebarSeparator,
-} from "@/components/ui/sidebar"
+  useSidebar,
+} from "@/components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { SignOutButton } from "@/components/auth/sign-out-button"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { SignOutButton } from "@/components/auth/sign-out-button";
+import { Badge } from "@/components/ui/badge";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import { ThemeToggle } from "@/components/theme-toggle"
+} from "@/components/ui/collapsible";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user?: {
@@ -82,20 +89,21 @@ const navigation = [
     url: "/admin/activity",
     icon: Shield,
   },
-]
+];
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const { state } = useSidebar();
 
   const isPathActive = (path: string) => {
     if (path === "/admin") {
-      return pathname === "/admin"
+      return pathname === "/admin";
     }
-    return pathname.startsWith(path)
-  }
+    return pathname.startsWith(path);
+  };
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" className="overflow-hidden" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -108,7 +116,6 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarSeparator />
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -148,7 +155,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                         </CollapsibleContent>
                       </SidebarMenuItem>
                     </Collapsible>
-                  )
+                  );
                 } else {
                   return (
                     <SidebarMenuItem key={item.url}>
@@ -162,42 +169,49 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                  )
+                  );
                 }
               })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarSeparator />
-      <SidebarFooter>
+      <SidebarFooter className="pb-3">
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex items-center justify-between px-2 py-1">
-              <span className="text-sm text-muted-foreground">Theme</span>
-              <ThemeToggle />
-            </div>
+            <ThemeToggle
+              button={
+                <SidebarMenuButton className="h-auto py-2">
+                  <Palette />
+                </SidebarMenuButton>
+              }
+            />
           </SidebarMenuItem>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                      {user?.name?.[0]?.toUpperCase() || "A"}
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-sm font-medium">
-                        {user?.name || "Admin"}
-                      </span>
+                <SidebarMenuButton className="h-auto py-2">
+                  <div className="flex items-center gap-2 w-full">
+                    <UserIcon />
+                    <div className="flex flex-col items-start min-w-0 flex-1 group-data-[collapsible=icon]:hidden">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="text-sm font-medium truncate max-w-[150px]">
+                            {user?.name || "Admin"}
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent side="right">
+                          <p>{user?.name || "Admin"}</p>
+                        </TooltipContent>
+                      </Tooltip>
                       {user?.role && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs mt-0.5">
                           {user.role}
                         </Badge>
                       )}
                     </div>
+                    <ChevronUp className="ml-auto h-4 w-4 shrink-0 group-data-[collapsible=icon]:hidden" />
                   </div>
-                  <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -222,5 +236,5 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

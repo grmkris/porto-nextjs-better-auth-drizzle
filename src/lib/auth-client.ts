@@ -5,9 +5,7 @@ import { getAddress } from "viem";
 
 export const authClient = createAuthClient({
   baseURL: clientEnv.NEXT_PUBLIC_BETTER_AUTH_URL,
-  plugins: [
-    adminClient(),
-  ],
+  plugins: [adminClient()],
 });
 
 /**

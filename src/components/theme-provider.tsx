@@ -34,13 +34,13 @@ export function ThemeProvider({
       if (stored) {
         try {
           const { themeId } = JSON.parse(stored);
-          return themes.find(t => t.id === themeId) || themes[0];
+          return themes.find((t) => t.id === themeId) || themes[0];
         } catch {
           // Invalid stored data
         }
       }
     }
-    return themes.find(t => t.id === defaultTheme) || themes[0];
+    return themes.find((t) => t.id === defaultTheme) || themes[0];
   });
 
   const [mode, setModeState] = useState<ThemeMode>(() => {
@@ -61,7 +61,9 @@ export function ThemeProvider({
   const [resolvedMode, setResolvedMode] = useState<"light" | "dark">(() => {
     if (mode === "system") {
       if (typeof window !== "undefined") {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
       }
       return "light";
     }
@@ -79,13 +81,16 @@ export function ThemeProvider({
     root.classList.add(resolvedMode);
 
     // Store preferences
-    localStorage.setItem(storageKey, JSON.stringify({ themeId: theme.id, mode }));
+    localStorage.setItem(
+      storageKey,
+      JSON.stringify({ themeId: theme.id, mode }),
+    );
   }, [theme, mode, resolvedMode, storageKey]);
 
   useEffect(() => {
     if (mode === "system") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      
+
       const handleChange = () => {
         setResolvedMode(mediaQuery.matches ? "dark" : "light");
       };
@@ -100,7 +105,7 @@ export function ThemeProvider({
   }, [mode]);
 
   const setTheme = (themeId: string) => {
-    const newTheme = themes.find(t => t.id === themeId);
+    const newTheme = themes.find((t) => t.id === themeId);
     if (newTheme) {
       setThemeState(newTheme);
     }
@@ -111,7 +116,9 @@ export function ThemeProvider({
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, mode, resolvedMode, setTheme, setMode }}>
+    <ThemeContext.Provider
+      value={{ theme, mode, resolvedMode, setTheme, setMode }}
+    >
       {children}
     </ThemeContext.Provider>
   );
