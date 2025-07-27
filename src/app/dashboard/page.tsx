@@ -49,8 +49,8 @@ export default function Dashboard() {
       await authClient.signOut();
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries();
       router.push("/" );
+      await queryClient.invalidateQueries();
     },
   });
 

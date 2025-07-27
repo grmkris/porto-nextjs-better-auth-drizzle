@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { openAPI, siwe } from "better-auth/plugins";
+import { openAPI, siwe, admin } from "better-auth/plugins";
 import { db } from "@/server/db/drizzle";
 import { serverEnv } from "@/env/serverEnv";
 import { verifyMessage, createPublicClient, http, getAddress } from "viem";
@@ -20,6 +20,10 @@ export const auth = betterAuth({
   secret: serverEnv.BETTER_AUTH_SECRET,
   plugins: [
     openAPI(),
+    admin({
+      defaultRole: "user",
+      adminRoles: ["admin"],
+    }),
     siwe({
       domain: "localhost:3000",
       emailDomainName: "unite-defi.com",

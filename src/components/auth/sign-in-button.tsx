@@ -53,8 +53,8 @@ export function SignInButton() {
       return verifyResponse;
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries();
       router.push("/dashboard");
+      await queryClient.invalidateQueries();
     },
   });
 

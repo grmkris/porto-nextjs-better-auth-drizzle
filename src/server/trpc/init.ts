@@ -53,3 +53,19 @@ export const protectedProcedure = t.procedure.use(async (opts) => {
     },
   });
 });
+
+export const adminProcedure = protectedProcedure.use(async (opts) => {
+  const { ctx } = opts;
+  
+  // Check if user has admin role
+  if (ctx.user?.role !== "admin") {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "You must be an admin to access this resource",
+    });
+  }
+
+  return opts.next({
+    ctx,
+  });
+});
