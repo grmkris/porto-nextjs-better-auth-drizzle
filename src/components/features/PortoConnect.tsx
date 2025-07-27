@@ -2,8 +2,7 @@
 
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Wallet, ShieldCheck, Loader2, LogOut } from "lucide-react";
 import { useSession } from "@/hooks/useSession";
@@ -27,10 +26,11 @@ export function PortoConnect() {
     (connector) => connector.id === "xyz.ithaca.porto",
   )!;
 
-  const signOutMutation = useMutation({
-    mutationFn: () => authClient.signOut(),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries();
+  const signOutMutation = useDisconnect({
+    mutation: {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries();
+      },
     },
   });
 
@@ -108,7 +108,7 @@ export function PortoConnect() {
           </span>
         </div>
         <Button
-          onClick={() => signOutMutation.mutate()}
+          onClick={() => signOutMutation.disconnect()}
           disabled={signOutMutation.isPending}
           variant="ghost"
           size="sm"
