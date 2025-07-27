@@ -1,7 +1,8 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import * as React from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   Home,
   Users,
@@ -11,7 +12,10 @@ import {
   ChevronUp,
   Settings,
   LayoutDashboard,
-} from "lucide-react";
+} from "lucide-react"
+
+import { SearchForm } from "@/components/search-form"
+import { VersionSwitcher } from "@/components/version-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -23,28 +27,29 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSkeleton,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarRail,
   SidebarSeparator,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/sidebar"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SignOutButton } from "@/components/auth/sign-out-button";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/ui/dropdown-menu"
+import { SignOutButton } from "@/components/auth/sign-out-button"
+import { Badge } from "@/components/ui/badge"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+} from "@/components/ui/collapsible"
+import { ThemeToggle } from "@/components/theme-toggle"
 
-interface AppSidebarProps {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   user?: {
     name?: string | null;
     email?: string | null;
@@ -52,45 +57,45 @@ interface AppSidebarProps {
   };
 }
 
-export function AppSidebar({ user }: AppSidebarProps) {
-  const pathname = usePathname();
+const navigation = [
+  {
+    title: "Dashboard",
+    url: "/admin",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "User Management",
+    icon: Users,
+    items: [
+      {
+        title: "All Users",
+        url: "/admin/users",
+      },
+      {
+        title: "User Sessions",
+        url: "/admin/sessions",
+      },
+    ],
+  },
+  {
+    title: "Activity Logs",
+    url: "/admin/activity",
+    icon: Shield,
+  },
+]
 
-  const navigation = [
-    {
-      title: "Dashboard",
-      url: "/admin",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "User Management",
-      icon: Users,
-      items: [
-        {
-          title: "All Users",
-          url: "/admin/users",
-        },
-        {
-          title: "User Sessions",
-          url: "/admin/sessions",
-        },
-      ],
-    },
-    {
-      title: "Activity Logs",
-      url: "/admin/activity",
-      icon: Shield,
-    },
-  ];
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
+  const pathname = usePathname()
 
   const isPathActive = (path: string) => {
     if (path === "/admin") {
-      return pathname === "/admin";
+      return pathname === "/admin"
     }
-    return pathname.startsWith(path);
-  };
+    return pathname.startsWith(path)
+  }
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -143,7 +148,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
                         </CollapsibleContent>
                       </SidebarMenuItem>
                     </Collapsible>
-                  );
+                  )
                 } else {
                   return (
                     <SidebarMenuItem key={item.url}>
@@ -157,7 +162,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                  );
+                  )
                 }
               })}
             </SidebarMenu>
@@ -167,6 +172,12 @@ export function AppSidebar({ user }: AppSidebarProps) {
       <SidebarSeparator />
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="flex items-center justify-between px-2 py-1">
+              <span className="text-sm text-muted-foreground">Theme</span>
+              <ThemeToggle />
+            </div>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -209,6 +220,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
-  );
+  )
 }

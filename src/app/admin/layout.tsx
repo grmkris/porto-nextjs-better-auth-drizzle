@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { cookies } from "next/headers";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/admin/app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
