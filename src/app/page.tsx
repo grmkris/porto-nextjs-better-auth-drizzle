@@ -1,6 +1,6 @@
 "use client";
 
-import { PortoConnectManual } from "@/components/features/porto-connect-manual";
+import { PortoConnect } from "@/components/features/porto-connect";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
           <p className="text-muted-foreground mb-4">
             Connect and authenticate with your Porto wallet to get started
           </p>
-          <PortoConnectManual />
+          <PortoConnect />
         </div>
       </div>
     </div>
