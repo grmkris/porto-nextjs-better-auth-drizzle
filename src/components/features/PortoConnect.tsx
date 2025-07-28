@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Wallet, ShieldCheck, Loader2, LogOut } from "lucide-react";
 import { useSession } from "@/hooks/useSession";
+import { clientEnv } from "@/env/clientEnv";
 
 export function PortoConnect() {
   const account = useAccount();

@@ -1,4 +1,4 @@
-# Unite DeFi Starter Kit 🚀
+# porto-nextjs-better-auth-drizzle Starter Kit 🚀
 
 A production-ready starter kit for building full-stack dApps with Next.js 15, Porto web3 accounts, and Better Auth. Perfect for hackathons and MVPs that need passwordless authentication with wallet-based sign-in.
 
