@@ -8,13 +8,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "@/hooks/useSession";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { TRPCClientError } from "@trpc/client";
 import { useTRPC } from "../trpc/client";
+import { useDisconnect } from "wagmi";
 
 export default function Dashboard() {
   const trpc = useTRPC();
   const session = useSession();
   const router = useRouter();
+  const { disconnectAsync } = useDisconnect();
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
@@ -47,6 +48,7 @@ export default function Dashboard() {
 
   const signOutMutation = useMutation({
     mutationFn: async () => {
+      await disconnectAsync();
       await authClient.signOut();
     },
     onSuccess: async () => {
@@ -54,20 +56,6 @@ export default function Dashboard() {
       await queryClient.invalidateQueries();
     },
   });
-
-  // Handle errors
-  const error = profileError || walletsError || statsError;
-  if (error instanceof TRPCClientError && error.data?.code === "UNAUTHORIZED") {
-    router.push("/");
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold mb-2">Unauthorized Access</h2>
-          <p className="text-gray-600">Redirecting to login...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (session.isPending || profileLoading) {
     return (

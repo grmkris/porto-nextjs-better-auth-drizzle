@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { PortoConnect } from "@/components/features/PortoConnect";
+import { PortoConnectManual } from "@/components/features/porto-connect-manual";
 import { useSession } from "@/hooks/useSession";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -67,7 +67,7 @@ export default function AdminLoginPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <PortoConnect />
+            <PortoConnectManual />
 
             <div className="text-center text-sm text-gray-600">
               <p>
